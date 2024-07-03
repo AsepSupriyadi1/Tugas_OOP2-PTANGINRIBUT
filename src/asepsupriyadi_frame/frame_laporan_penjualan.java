@@ -8,6 +8,7 @@ package asepsupriyadi_frame;
 import asepsupriyadi_database.koneksi_asepsupriyadi;
 import asepsupriyadi_utils.PDFGenerator;
 import asepsupriyadi_model.ModelPenjualan;
+import asepsupriyadi_utils.SessionManager;
 import com.itextpdf.text.DocumentException;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -393,7 +394,12 @@ public class frame_laporan_penjualan extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frame_laporan_penjualan().setVisible(true);
+                if (!SessionManager.isLoggedIn()) {
+                    form_login_asepsupriyadi fb = new form_login_asepsupriyadi();
+                    fb.setVisible(true);
+                } else {
+                    new frame_laporan_penjualan().setVisible(true);
+                }
             }
         });
     }

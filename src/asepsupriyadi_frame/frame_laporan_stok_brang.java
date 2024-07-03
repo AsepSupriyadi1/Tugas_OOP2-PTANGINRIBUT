@@ -9,6 +9,7 @@ import asepsupriyadi_database.koneksi_asepsupriyadi;
 import asepsupriyadi_model.ModelBarang;
 import asepsupriyadi_model.ModelPenjualan;
 import asepsupriyadi_utils.PDFGenerator;
+import asepsupriyadi_utils.SessionManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -257,7 +258,7 @@ public class frame_laporan_stok_brang extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Tidak ada data tersedia !", "PT Angin Ribut", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 PDFGenerator.generateStockReport(filePath, barangList);
-                 JOptionPane.showMessageDialog(null, "Laporan berhasil dibuat !", "PT Angin Ribut", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Laporan berhasil dibuat !", "PT Angin Ribut", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception ex) {
             System.out.println(ex);
@@ -336,7 +337,13 @@ public class frame_laporan_stok_brang extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frame_laporan_stok_brang().setVisible(true);
+                if (!SessionManager.isLoggedIn()) {
+                    form_login_asepsupriyadi fb = new form_login_asepsupriyadi();
+                    fb.setVisible(true);
+                } else {
+                    new frame_laporan_stok_brang().setVisible(true);
+                }
+
             }
         });
     }

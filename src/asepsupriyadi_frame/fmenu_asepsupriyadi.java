@@ -5,6 +5,8 @@
  */
 package asepsupriyadi_frame;
 
+import asepsupriyadi_utils.SessionManager;
+
 /**
  *
  * @author TUF
@@ -200,7 +202,12 @@ public class fmenu_asepsupriyadi extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new fmenu_asepsupriyadi().setVisible(true);
+                if (!SessionManager.isLoggedIn()) {
+                    form_login_asepsupriyadi fb = new form_login_asepsupriyadi();
+                    fb.setVisible(true);
+                } else {
+                    new fmenu_asepsupriyadi().setVisible(true);
+                }
             }
         });
     }

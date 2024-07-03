@@ -10,6 +10,7 @@ import asepsupriyadi_model.ModelBarang;
 import asepsupriyadi_model.ModelPenjualan;
 import asepsupriyadi_model.ModelTmpBarang;
 import asepsupriyadi_utils.PDFGenerator;
+import asepsupriyadi_utils.SessionManager;
 import java.awt.Desktop;
 import java.awt.event.KeyEvent;
 import java.net.URL;
@@ -920,7 +921,13 @@ public class form_penjualan_asepsupriyadi1 extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new form_penjualan_asepsupriyadi1().setVisible(true);
+                if (!SessionManager.isLoggedIn()) {
+                    form_login_asepsupriyadi fb = new form_login_asepsupriyadi();
+                    fb.setVisible(true);
+                } else {
+                    new form_penjualan_asepsupriyadi1().setVisible(true);
+                }
+
             }
         });
     }

@@ -6,6 +6,7 @@
 package asepsupriyadi_frame;
 
 import asepsupriyadi_database.koneksi_asepsupriyadi;
+import asepsupriyadi_utils.SessionManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -602,7 +603,12 @@ public class form_barang_asepsupriyadi extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new form_barang_asepsupriyadi().setVisible(true);
+                if (!SessionManager.isLoggedIn()) {
+                    form_login_asepsupriyadi fb = new form_login_asepsupriyadi();
+                    fb.setVisible(true);
+                } else {
+                    new form_barang_asepsupriyadi().setVisible(true);
+                }
             }
         });
     }

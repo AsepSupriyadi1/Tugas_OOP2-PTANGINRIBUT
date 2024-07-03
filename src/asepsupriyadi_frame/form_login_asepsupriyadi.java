@@ -6,6 +6,11 @@
 package asepsupriyadi_frame;
 
 import asepsupriyadi_database.koneksi_asepsupriyadi;
+import asepsupriyadi_model.LoginResponse;
+import asepsupriyadi_utils.SessionManager;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
@@ -165,24 +170,22 @@ public class form_login_asepsupriyadi extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "username and password required !!");
         } else {
             try {
-                java.sql.Connection conn = (java.sql.Connection) koneksi_asepsupriyadi.getKoneksi();
-                java.sql.Statement stm = conn.createStatement();
-                java.sql.ResultSet sql = stm.executeQuery("select * from tb_akun where username='" + txt_username.getText() + "' and password = '" + txt_password.getText() + "'");
-                if (sql.next()) {
-                    if (txt_password.getText().equals(sql.getString("password"))) {
-                        JOptionPane.showMessageDialog(null, "login berhasil");
-                        this.dispose();
-                        fmenu_asepsupriyadi fb = new fmenu_asepsupriyadi();
-                        fb.setVisible(true);
-                        this.setVisible(false);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "username and password salah");
-                        txt_username.setText("");
-                        txt_password.setText("");
-                        txt_username.requestFocus();
-                    }
+                String username = txt_username.getText();
+                String password = txt_password.getText();
+                
+                System.out.println(username);
+                System.out.println(password);
+
+                LoginResponse res = SessionManager.login(username, password);
+
+                if (res.isSuccess()) {
+                    JOptionPane.showMessageDialog(null, "login berhasil");
+                    this.dispose();
+                    fmenu_asepsupriyadi fb = new fmenu_asepsupriyadi();
+                    fb.setVisible(true);
+                    this.setVisible(false);
                 } else {
-                    JOptionPane.showMessageDialog(null, "username dan password tidak tersedia");
+                    JOptionPane.showMessageDialog(null, res.getMessage());
                     txt_username.setText("");
                     txt_password.setText("");
                     txt_username.requestFocus();
@@ -224,7 +227,12 @@ public class form_login_asepsupriyadi extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new form_login_asepsupriyadi().setVisible(true);
+                if (SessionManager.isLoggedIn()) {
+                    fmenu_asepsupriyadi fb = new fmenu_asepsupriyadi();
+                    fb.setVisible(true);
+                } else {
+                    new form_login_asepsupriyadi().setVisible(true);
+                }
             }
         });
     }
